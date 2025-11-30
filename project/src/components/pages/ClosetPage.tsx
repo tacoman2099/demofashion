@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ClosetHeader from '../features/closet/ClosetHeader';
 import ClosetGrid from '../features/closet/ClosetGrid';
 import ClosetStats from '../features/closet/ClosetStats';
+import AddItemModal from '../features/closet/AddItemModal';
 import {
   mockClosetItems,
   mockClosetRequests,
@@ -16,11 +17,8 @@ import {
 
 export type CategoryType = 'all' | 'tops' | 'bottoms' | 'shoes' | 'outerwear' | 'accessories';
 
-interface ClosetPageProps {
-  onAddItem: () => void;
-}
-
-const ClosetPage: React.FC<ClosetPageProps> = ({ onAddItem }) => {
+const ClosetPage: React.FC = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const categories: { value: CategoryType; label: string }[] = [
     { value: 'all', label: 'All' },
     { value: 'tops', label: 'Tops' },
@@ -49,7 +47,7 @@ const ClosetPage: React.FC<ClosetPageProps> = ({ onAddItem }) => {
 
   return (
     <div className="max-w-md mx-auto p-4 space-y-6 page-transition">
-      <ClosetHeader onAddItem={onAddItem} />
+      <ClosetHeader onAddItem={() => setIsAddModalOpen(true)} />
 
       <Card className="bg-muted/40">
         <CardContent className="flex items-center gap-4 p-4">
@@ -140,6 +138,7 @@ const ClosetPage: React.FC<ClosetPageProps> = ({ onAddItem }) => {
           ))}
         </CardContent>
       </Card>
+      <AddItemModal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
     </div>
   );
 };
